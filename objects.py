@@ -29,10 +29,10 @@ class Student:
 
     def __str__(self):
         return f"Имя: {self.name}\n" \
-               f"Фамилия: {self.surname}\n" \
-               f"Средняя оценка за домашние задания: {self.student_avg_hwgrade()}\n" \
-               f"Курсы в процессе изучения: {self.courses_in_progress}\n" \
-               f"Завершенные курсы: {self.finished_courses}\n" \
+               f"\rФамилия: {self.surname}\n" \
+               f"\rСредняя оценка за домашние задания: {self.student_avg_hwgrade()}\n" \
+               f"\rКурсы в процессе изучения: {', '.join(self.courses_in_progress)}\n" \
+               f"\rЗавершенные курсы: {', '.join(self.finished_courses)}" 
  
     def __it__(self, other):
         if not isinstance(other, Student):
@@ -47,7 +47,7 @@ class Student:
     def __le__(self, other):
         if not isinstance(other, Student):
             raise Exception ('Ошибка')
-        return self.student_avg_hwgrade() > other.student_avg_hwgrade()
+        return self.student_avg_hwgrade() <= other.student_avg_hwgrade()
 
                 
 class Mentor:
@@ -72,7 +72,7 @@ class Lecturer(Mentor):
         return round(sum(all_grades_lect)/len(all_grades_lect), 2)
 
     def __str__(self):
-        return f"Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.lecturer_avg_grade()}"
+        return f"\rИмя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.lecturer_avg_grade()}"
 
     def __it__(self, other):
         if not isinstance(other, Lecturer):
@@ -82,21 +82,16 @@ class Lecturer(Mentor):
     def __eq__(self, other):
         if not isinstance(other, Lecturer):
             raise Exception ('Ошибка')
-        return self.student_avg_hwgrade() == other.student_avg_hwgrade()
+        return self.lecturer_avg_grade() == other.lecturer_avg_grade()
 
     def __le__(self, other):
         if not isinstance(other, Lecturer):
             raise Exception ('Ошибка')
-        return self.lecturer_avg_grade() > other.lecturer_avg_grade()
+        return self.lecturer_avg_grade() <= other.lecturer_avg_grade()
 
 class Reviewer(Mentor):
-    def __init__(self, name, surname):
-        self.name = name
-        self.surname = surname
-        self.courses_attached = []
-
     def __str__(self):
-        return f"Имя: {self.name}\nФамилия: {self.surname}"
+        return f"\rИмя: {self.name}\nФамилия: {self.surname}"
         
 
     def rate_hw(self, student, course, grade):
@@ -108,8 +103,8 @@ class Reviewer(Mentor):
         else:
             return 'Ошибка'
 
-def total_avg(persons, list):
-    if not isinstance(persons, list):
+def total_avg(persons, course):
+    if not isinstance(persons,course):
         return 'нет списка'
     all_grades = []
     for person in persons:
@@ -142,4 +137,4 @@ rvw1.rate_hw(std1,'Logic',10)
 
 print(std1,std2)
 print(lct1,lct2)
-    
+
